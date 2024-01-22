@@ -1,0 +1,83 @@
++ set -e
++ getopts :f: OPCION
++ case ${OPCION} in
++ ARCHIVO_CONFIG=config.ini
++ getopts :f: OPCION
++ '[' -z config.ini ']'
++ '[' -f config.ini ']'
++ source config.ini
+++ user=administrador
+++ password=secreto
+++ port=27018
+++ grep '^user=' config.ini
+++ awk -F= '{print $2}'
+++ tr -d '[:space:]'
++ USER=administrador
+++ grep '^password=' config.ini
+++ awk -F= '{print $2}'
+++ tr -d '[:space:]'
++ PASSWORD=secreto
+++ grep '^port=' config.ini
+++ awk -F= '{print $2}'
+++ tr -d '[:space:]'
++ PORT=27018
++ '[' -z ']'
++ PUERTO_MONGOD=27017
++ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 4B7C549A058F8B6B
+Warning: apt-key output should not be parsed (stdout is not a terminal)
+Executing: /tmp/apt-key-gpghome.CK8Lql8soR/gpg.1.sh --keyserver hkp://keyserver.ubuntu.com:80 --recv 4B7C549A058F8B6B
+gpg: key 4B7C549A058F8B6B: "MongoDB 4.2 Release Signing Key <packaging@mongodb.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
++ echo 'deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse'
++ sudo tee /etc/apt/sources.list.d/mongodb.list
+deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse
++ sudo apt update
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Ign:1 https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 InRelease
+Hit:2 https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 Release
+Hit:3 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:4 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:6 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+20 packages can be upgraded. Run 'apt list --upgradable' to see them.
+++ mongo --version
+++ grep 4.2.1
++ [[ -z MongoDB shell version v4.2.1 ]]
++ [[ -d /datos/bd ]]
++ [[ -d /datos/log ]]
++ chown mongodb /datos/log /datos/bd
++ chgrp mongodb /datos/log /datos/bd
++ cat
++ sudo systemctl start mongod
+++ pgrep -f mongod
++ MONGO_PID='5254
+5315'
++ '[' -z '5254
+5315' ']'
++ mongo admin
+MongoDB shell version v4.2.1
+connecting to: mongodb://127.0.0.1:27017/admin?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("606d3c70-45d8-4399-b956-6843e6fbd4b1") }
+MongoDB server version: 4.2.1
+Successfully added user: {
+	"user" : "administrador",
+	"roles" : [
+		{
+			"role" : "root",
+			"db" : "admin"
+		},
+		{
+			"role" : "restore",
+			"db" : "admin"
+		}
+	]
+}
+bye
++ logger 'El usuario  ha sido creado con éxito!'
++ exit 0
